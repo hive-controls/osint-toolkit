@@ -1,0 +1,2 @@
+ac7169d74c4997ab7f4b42b4ed64ba2436ebde57ad2258b1e682baa350948d51
+maigret-0.6.4-py3-none-any.whl

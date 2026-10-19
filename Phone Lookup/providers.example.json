@@ -1,0 +1,7 @@
+{
+  "numverify": { "enabled": false },
+  "hudson_rock": { "enabled": false },
+  "dehashed": { "enabled": false },
+  "leakcheck": { "enabled": false },
+  "leakradar": { "enabled": false }
+}

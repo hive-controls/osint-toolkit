@@ -1,0 +1,25 @@
+formic: 1
+name: user-scanner
+title: User-Scanner (hardened)
+description: Clearnet email and username scan. Opens the guided menu, which asks for the target and keeps its own VPN/proxy reminder and typed RUN.
+launch:
+  command: pwsh
+  args:
+    - "-NoLogo"
+    - "-NoProfile"
+    - "-ExecutionPolicy"
+    - "Bypass"
+    - "-File"
+    - "{repo}/User-Scanner Docker/scanner-menu.ps1"
+  cwd: "{repo}/User-Scanner Docker"
+config:
+  files:
+    - "User-Scanner Docker/README.md"
+    - "User-Scanner Docker/compose.yaml"
+status:
+  kind: exit-code
+health:
+  check: ["docker", "image", "inspect", "user-scanner-hardened:1.5.1.3"]
+pane:
+  prefer: window
+  interactive: true

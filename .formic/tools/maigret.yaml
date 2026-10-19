@@ -1,0 +1,27 @@
+formic: 1
+name: maigret
+title: Maigret (hardened)
+description: Clearnet username dossier. Opens the guided menu, which runs the host VPN/proxy gate and asks for a typed RUN. Open HTML reports only in an isolated browser profile or VM, never your daily browser.
+launch:
+  command: pwsh
+  args:
+    - "-NoLogo"
+    - "-NoProfile"
+    - "-ExecutionPolicy"
+    - "Bypass"
+    - "-File"
+    - "{repo}/Maigret Docker/maigret-menu.ps1"
+  cwd: "{repo}/Maigret Docker"
+config:
+  files:
+    - "Maigret Docker/README.md"
+    - "Maigret Docker/compose.yaml"
+status:
+  kind: exit-code
+health:
+  check: ["docker", "image", "inspect", "maigret-hardened:0.6.4"]
+pane:
+  prefer: window
+  interactive: true
+exit:
+  "64": blocked argument (--web, --force-update, --tor-proxy, --i2p-proxy)

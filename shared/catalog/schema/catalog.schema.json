@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "catalog.schema.json",
+  "title": "OSINT tool catalog",
+  "type": "object",
+  "required": ["catalog_version", "toolkit", "legacy_ids", "identifier_rules", "tools"],
+  "additionalProperties": false,
+  "properties": {
+    "catalog_version": {"type": "string", "pattern": "^[0-9]+$"},
+    "toolkit": {
+      "type": "object",
+      "required": ["name", "title"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+        "title": {"type": "string", "minLength": 1}
+      }
+    },
+    "gates_note": {"type": "string"},
+    "legacy_ids": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"}},
+    "identifier_rules": {"$ref": "#/$defs/identifier_rules"},
+    "tools": {"type": "array", "items": {"$ref": "#/$defs/tool"}}
+  },
+  "$defs": {
+    "kind": {"type": "string", "enum": ["username", "email", "phone"]},
+    "string_or_null": {"type": ["string", "null"]},
+    "identifier_rules": {
+      "type": "object",
+      "required": ["max_length", "forbidden_prefix", "forbidden_pattern", "target_error", "kinds", "kind_error"],
+      "additionalProperties": false,
+      "properties": {
+        "max_length": {"type": "integer", "minimum": 1},
+        "forbidden_prefix": {"type": "string", "minLength": 1},
+        "forbidden_pattern": {"type": "string", "minLength": 1},
+        "target_error": {"type": "string", "minLength": 1},
+        "kinds": {"type": "array", "items": {"$ref": "#/$defs/kind"}},
+        "kind_error": {"type": "string", "minLength": 1}
+      }
+    },
+    "input": {
+      "type": "object",
+      "required": ["name", "kind", "required", "cardinality"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+        "kind": {"type": "array", "items": {"$ref": "#/$defs/kind"}},
+        "required": {"type": "boolean"},
+        "cardinality": {"type": "string", "enum": ["one"]},
+        "kind_error": {"type": "string"},
+        "coerce_kind": {"type": "boolean"},
+        "pattern": {"type": "string", "minLength": 1},
+        "pattern_error": {"type": "string"},
+        "flags": {"type": "object", "additionalProperties": {"type": "string", "minLength": 1}}
+      }
+    },
+    "option": {
+      "type": "object",
+      "required": ["name", "type", "required", "default", "flag", "error"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+        "type": {"type": "string", "enum": ["integer", "string"]},
+        "required": {"type": "boolean"},
+        "default": {"type": ["integer", "string"]},
+        "min": {"type": "integer"},
+        "max": {"type": "integer"},
+        "pattern": {"type": "string", "minLength": 1},
+        "transform": {"type": "string", "enum": ["upper"]},
+        "flag": {"$ref": "#/$defs/string_or_null"},
+        "error": {"type": "string", "minLength": 1}
+      }
+    },
+    "template_segment": {
+      "type": "object",
+      "required": ["when", "tokens"],
+      "additionalProperties": false,
+      "properties": {
+        "when": {"$ref": "#/$defs/string_or_null"},
+        "tokens": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "output": {
+      "type": "object",
+      "required": ["kind", "glob", "adapter", "schema"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+        "glob": {"type": "string", "minLength": 1},
+        "adapter": {"$ref": "#/$defs/string_or_null"},
+        "schema": {"$ref": "#/$defs/string_or_null"}
+      }
+    },
+    "gates": {
+      "type": "object",
+      "required": ["network", "subject_authorization"],
+      "additionalProperties": false,
+      "properties": {
+        "network": {"type": "string", "enum": ["vpn", "routed-proxy", "tor", "none"]},
+        "subject_authorization": {"type": "string", "enum": ["required"]}
+      }
+    },
+    "interactive_equivalents": {
+      "type": "object",
+      "required": ["menu", "noninteractive"],
+      "additionalProperties": false,
+      "properties": {
+        "menu": {"$ref": "#/$defs/string_or_null"},
+        "noninteractive": {"$ref": "#/$defs/string_or_null"}
+      }
+    },
+    "formic": {
+      "type": "object",
+      "required": ["title", "description", "profile_order", "mode", "config_files", "status", "health", "pane"],
+      "additionalProperties": false,
+      "properties": {
+        "title": {"type": "string", "minLength": 1},
+        "description": {"type": "string", "minLength": 1},
+        "profile_order": {"type": "integer", "minimum": 1},
+        "mode": {"type": "string", "enum": ["tab", "window"]},
+        "config_files": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^[^/\\\\.][^\\\\:]*$"}},
+        "status": {
+          "type": "object",
+          "required": ["kind"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": {"type": "string", "enum": ["exit-code", "ndjson"]},
+            "events": {"type": "array", "items": {"type": "string", "pattern": "^[a-z][a-z-]*$"}}
+          }
+        },
+        "health": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "image": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+            "menu_args": {"type": "array", "items": {"type": "string", "minLength": 1}}
+          }
+        },
+        "pane": {
+          "type": "object",
+          "required": ["prefer", "interactive"],
+          "additionalProperties": false,
+          "properties": {
+            "prefer": {"type": "string", "enum": ["window", "tab"]},
+            "interactive": {"type": "boolean"}
+          }
+        },
+        "exit": {"type": "object", "additionalProperties": {"type": "string", "minLength": 1}}
+      }
+    },
+    "tool": {
+      "type": "object",
+      "required": ["id", "title", "version", "runner", "menu", "output_env", "interactive_only", "inputs", "options",
+                   "fixed_argv", "argv_template", "outputs", "exit_codes", "gates", "interactive_equivalents", "formic"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+        "title": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "runner": {"type": "string", "pattern": "^[^/\\\\.][^\\\\:]*$"},
+        "menu": {"$ref": "#/$defs/string_or_null"},
+        "output_env": {"$ref": "#/$defs/string_or_null"},
+        "interactive_only": {"type": "boolean"},
+        "inputs": {"type": "array", "items": {"$ref": "#/$defs/input"}},
+        "options": {"type": "array", "items": {"$ref": "#/$defs/option"}},
+        "fixed_argv": {"type": "array", "items": {"type": "string"}},
+        "argv_template": {"type": "array", "items": {"$ref": "#/$defs/template_segment"}},
+        "outputs": {"type": "array", "items": {"$ref": "#/$defs/output"}},
+        "exit_codes": {"type": "object", "additionalProperties": {"type": "string"}},
+        "gates": {"$ref": "#/$defs/gates"},
+        "interactive_equivalents": {"$ref": "#/$defs/interactive_equivalents"},
+        "formic": {"$ref": "#/$defs/formic"}
+      }
+    }
+  }
+}

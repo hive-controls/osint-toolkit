@@ -1,0 +1,8 @@
+**/.venv
+**/__pycache__
+**/*.pyc
+README.md
+README-docker.md
+*.ps1
+gate/
+design/

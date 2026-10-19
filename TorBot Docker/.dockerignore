@@ -1,0 +1,10 @@
+candidate/
+.git/
+**/.git/
+**/__pycache__/
+**/*.pyc
+design/
+README-docker.md
+gate/
+*.ps1
+artifacts/torbot-4.3.0-py3-none-any.whl

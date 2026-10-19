@@ -1,0 +1,68 @@
+name: torbot-hardened
+
+services:
+  tor:
+    build:
+      context: .
+      dockerfile: Dockerfile.tor
+    image: torbot-tor:local
+    user: "101:103"
+    read_only: true
+    init: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    mem_limit: 512m
+    cpus: 1.0
+    tmpfs:
+      # debian-tor is uid 101 / gid 103 on bookworm; DataDirectory is /tmp/tor-data
+      - /tmp:rw,noexec,nosuid,nodev,size=96m,mode=1777,uid=101,gid=103
+    networks:
+      - torbot-internal
+      - tor-egress
+    restart: "no"
+
+  torbot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: torbot-hardened:4.3.0
+    depends_on:
+      tor:
+        condition: service_healthy
+    read_only: true
+    init: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 256
+    mem_limit: 2g
+    cpus: 2.0
+    environment:
+      OSINT_SUBJECT_AUTH: ${OSINT_SUBJECT_AUTH:-}
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=128m,mode=1777
+    volumes:
+      - type: bind
+        # The runner/menu exports this variable (data-root lane); plain `docker compose` falls back to the legacy default below.
+        source: ${TORBOT_OUTPUT:-${USERPROFILE}/torbot-output}
+        target: /output
+    networks:
+      - torbot-internal
+    stdin_open: true
+    tty: true
+    restart: "no"
+
+networks:
+  torbot-internal:
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.32.0.0/24
+  tor-egress:
+    ipam:
+      config:
+        - subnet: 172.33.0.0/24

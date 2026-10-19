@@ -1,0 +1,26 @@
+# syntax=docker/dockerfile:1.7
+FROM debian:bookworm-slim@sha256:88200866dfff7ea7f5cbcb6ec7c8a701889efe6fe859fe64d6990e4b07ea4171
+
+ARG TOR_VERSION=0.4.9.11-0+deb12u1
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        "tor=${TOR_VERSION}" \
+        ca-certificates \
+        netcat-openbsd \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY tor/torrc /etc/tor/torrc
+COPY tor/healthcheck.sh /usr/local/bin/tor-healthcheck
+RUN chmod 0555 /usr/local/bin/tor-healthcheck
+
+USER debian-tor
+WORKDIR /tmp
+
+HEALTHCHECK --interval=5s --timeout=5s --start-period=60s --retries=30 \
+  CMD ["/usr/local/bin/tor-healthcheck"]
+
+EXPOSE 9050
+ENTRYPOINT ["tor", "-f", "/etc/tor/torrc"]

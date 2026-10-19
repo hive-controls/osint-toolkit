@@ -1,0 +1,203 @@
+{
+  "catalog_version": "1",
+  "gates_note": "network mode is enforced by the runner's gate config; the catalog states the minimum",
+  "toolkit": {"name": "osint-toolkit", "title": "OSINT toolkit"},
+  "legacy_ids": {"scanner": "user-scanner", "phone": "phone-lookup"},
+  "identifier_rules": {
+    "max_length": 254,
+    "forbidden_prefix": "-",
+    "forbidden_pattern": "[\\s\\x00-\\x1f]",
+    "target_error": "Enter one identifier, without whitespace or command flags.",
+    "kinds": ["username", "email", "phone"],
+    "kind_error": "Unknown identifier kind."
+  },
+  "tools": [
+    {
+      "id": "maigret",
+      "title": "Maigret username search",
+      "version": "0.6.4",
+      "runner": "Maigret Docker/run-maigret.ps1",
+      "menu": "Maigret Docker/maigret-menu.ps1",
+      "output_env": "MAIGRET_OUTPUT",
+      "interactive_only": false,
+      "inputs": [
+        {"name": "target", "kind": ["username"], "required": true, "cardinality": "one",
+         "kind_error": "Maigret requires a username and top-sites from 1 to 10000."}
+      ],
+      "options": [
+        {"name": "top", "type": "integer", "required": true, "default": 500, "min": 1, "max": 10000,
+         "flag": "--top-sites", "error": "Maigret requires a username and top-sites from 1 to 10000."}
+      ],
+      "fixed_argv": ["--no-recursion", "-J", "simple", "--csv", "-M"],
+      "argv_template": [
+        {"when": null, "tokens": ["{target}", "--top-sites", "{top}"]},
+        {"when": null, "tokens": ["{fixed_argv}"]}
+      ],
+      "outputs": [
+        {"kind": "report-json", "glob": "output/**/*.json", "adapter": "maigret", "schema": "schema/result.schema.json"},
+        {"kind": "report-csv", "glob": "output/**/*.csv", "adapter": "maigret", "schema": "schema/result.schema.json"}
+      ],
+      "exit_codes": {"0": "complete", "1": "failed", "2": "invalid arguments", "75": "network gate refused", "77": "subject authorization required", "78": "network gate configuration error", "130": "cancelled"},
+      "gates": {"network": "vpn", "subject_authorization": "required"},
+      "formic": {
+        "title": "Maigret (hardened)",
+        "description": "Clearnet username dossier. Opens the guided menu, which runs the host VPN/proxy gate and asks for a typed RUN. Open HTML reports only in an isolated browser profile or VM, never your daily browser.",
+        "profile_order": 4,
+        "mode": "tab",
+        "config_files": ["Maigret Docker/README.md", "Maigret Docker/compose.yaml"],
+        "status": {"kind": "exit-code"},
+        "health": {"image": "maigret-hardened"},
+        "pane": {"prefer": "window", "interactive": true},
+        "exit": {"64": "blocked argument (--web, --force-update, --tor-proxy, --i2p-proxy)"}
+      },
+      "interactive_equivalents": {"menu": "Maigret Docker/maigret-menu.ps1", "noninteractive": "osint-case scan <case> --tool maigret --target <username> --confirm RUN"}
+    },
+    {
+      "id": "user-scanner",
+      "title": "User-Scanner username and email search",
+      "version": "1.5.1.3",
+      "runner": "User-Scanner Docker/run-scanner.ps1",
+      "menu": "User-Scanner Docker/scanner-menu.ps1",
+      "output_env": "SCANNER_OUTPUT",
+      "interactive_only": false,
+      "inputs": [
+        {"name": "target", "kind": ["username", "email"], "required": true, "cardinality": "one",
+         "kind_error": "Scanner requires a username or email.", "flags": {"username": "-u", "email": "-e"}}
+      ],
+      "options": [
+        {"name": "modules", "type": "string", "required": false, "default": "", "flag": "-m",
+         "pattern": "[a-zA-Z0-9_,.-]+", "error": "Modules must be comma-separated module names."}
+      ],
+      "fixed_argv": ["--no-nsfw", "-f", "json", "-o", "/output/results.json"],
+      "argv_template": [
+        {"when": null, "tokens": ["{kind_flag}", "{target}"]},
+        {"when": null, "tokens": ["{fixed_argv}"]},
+        {"when": "modules", "tokens": ["-m", "{modules}"]}
+      ],
+      "outputs": [
+        {"kind": "report-json", "glob": "output/**/*.json", "adapter": "scanner", "schema": "schema/result.schema.json"},
+        {"kind": "report-csv", "glob": "output/**/*.csv", "adapter": "scanner", "schema": "schema/result.schema.json"}
+      ],
+      "exit_codes": {"0": "complete", "1": "failed", "2": "invalid arguments", "75": "network gate refused", "77": "subject authorization required", "78": "network gate configuration error", "130": "cancelled"},
+      "gates": {"network": "vpn", "subject_authorization": "required"},
+      "formic": {
+        "title": "User-Scanner (hardened)",
+        "description": "Clearnet email and username scan. Opens the guided menu, which asks for the target and keeps its own VPN/proxy reminder and typed RUN.",
+        "profile_order": 3,
+        "mode": "tab",
+        "config_files": ["User-Scanner Docker/README.md", "User-Scanner Docker/compose.yaml"],
+        "status": {"kind": "exit-code"},
+        "health": {"image": "user-scanner-hardened"},
+        "pane": {"prefer": "window", "interactive": true}
+      },
+      "interactive_equivalents": {"menu": "User-Scanner Docker/scanner-menu.ps1", "noninteractive": "osint-case scan <case> --tool scanner --kind <username|email> --target <identifier> --confirm RUN"}
+    },
+    {
+      "id": "phone-lookup",
+      "title": "Phone Lookup numbering-plan and provider signals",
+      "version": "0.1.0",
+      "runner": "Phone Lookup/run-phone.ps1",
+      "menu": "Phone Lookup/phone-menu.ps1",
+      "output_env": "PHONE_LOOKUP_OUTPUT",
+      "interactive_only": false,
+      "inputs": [
+        {"name": "target", "kind": ["phone"], "required": true, "cardinality": "one",
+         "coerce_kind": true, "pattern": "\\+?[0-9().-]{4,30}",
+         "pattern_error": "Enter a phone number, preferably +countrycode and digits."}
+      ],
+      "options": [
+        {"name": "region", "type": "string", "required": false, "default": "", "flag": "--region",
+         "pattern": "[A-Za-z]{2}", "transform": "upper", "error": "Region must be a two-letter country code."}
+      ],
+      "fixed_argv": [],
+      "argv_template": [
+        {"when": null, "tokens": ["{target}"]},
+        {"when": "region", "tokens": ["--region", "{region}"]}
+      ],
+      "outputs": [
+        {"kind": "report-json", "glob": "output/**/*.json", "adapter": "phone", "schema": "schema/result.schema.json"}
+      ],
+      "exit_codes": {"0": "complete", "1": "failed", "2": "invalid arguments", "75": "network gate refused", "77": "subject authorization required", "78": "network gate configuration error", "130": "cancelled"},
+      "gates": {"network": "vpn", "subject_authorization": "required"},
+      "formic": {
+        "title": "Phone lookup (hardened)",
+        "description": "Numbering-plan metadata plus optional breach and infostealer queries. Opens the guided menu, which asks for the number and a typed RUN. API keys stay in the tool's own secrets file.",
+        "profile_order": 2,
+        "mode": "tab",
+        "config_files": ["Phone Lookup/README.md", "Phone Lookup/compose.yaml"],
+        "status": {"kind": "exit-code"},
+        "health": {"image": "phone-lookup-hardened"},
+        "pane": {"prefer": "window", "interactive": true}
+      },
+      "interactive_equivalents": {"menu": "Phone Lookup/phone-menu.ps1", "noninteractive": "osint-case scan <case> --tool phone --target <number> [--region <cc>] --confirm RUN"}
+    },
+    {
+      "id": "osint-case",
+      "title": "OSINT Profiler case workbench",
+      "version": "0.1.0",
+      "runner": "OSINT Profiler/osint-case.ps1",
+      "menu": "OSINT Profiler/osint-case.ps1",
+      "output_env": null,
+      "interactive_only": false,
+      "inputs": [
+        {"name": "case_id", "kind": [], "required": true, "cardinality": "one"}
+      ],
+      "options": [],
+      "fixed_argv": [],
+      "argv_template": [],
+      "outputs": [
+        {"kind": "case-store", "glob": "cases/*/case.sqlite", "adapter": null, "schema": null}
+      ],
+      "exit_codes": {"0": "complete", "1": "failed", "2": "invalid arguments", "75": "network gate refused", "77": "subject authorization required", "78": "network gate configuration error", "130": "cancelled"},
+      "gates": {"network": "none", "subject_authorization": "required"},
+      "formic": {
+        "title": "OSINT Profiler",
+        "description": "Guided local case management, evidence, imports and scans with an optional browser editor.",
+        "profile_order": 1,
+        "mode": "tab",
+        "config_files": ["OSINT Profiler/README.md"],
+        "status": {"kind": "ndjson", "events": ["started", "progress", "ok", "failed", "needs-human"]},
+        "health": {"menu_args": ["doctor", "--offline"]},
+        "pane": {"prefer": "window", "interactive": true},
+        "exit": {
+          "0": "session or operation completed",
+          "1": "operation failed",
+          "2": "invalid arguments or missing required input",
+          "75": "network gate refused the run",
+          "77": "subject authorization required",
+          "78": "network gate configuration error",
+          "130": "one-shot operation interrupted"
+        }
+      },
+      "interactive_equivalents": {"menu": "OSINT Profiler/osint-case.ps1", "noninteractive": "osint-case <command> <case> --json"}
+    },
+    {
+      "id": "torbot",
+      "title": "TorBot onion crawler (deferred, interactive only)",
+      "version": "4.3.0",
+      "runner": "TorBot Docker/run-torbot.ps1",
+      "menu": "TorBot Docker/torbot-menu.ps1",
+      "output_env": null,
+      "interactive_only": true,
+      "inputs": [],
+      "options": [],
+      "fixed_argv": [],
+      "argv_template": [],
+      "outputs": [],
+      "exit_codes": {"0": "complete", "1": "failed", "2": "invalid arguments", "75": "network gate refused", "77": "subject authorization required", "78": "network gate configuration error", "130": "cancelled"},
+      "gates": {"network": "vpn","subject_authorization": "required"},
+      "formic": {
+        "title": "TorBot (hardened)",
+        "description": "Onion crawler over the Tor sidecar. Opens the guided menu, which runs the host VPN/proxy gate and asks for a typed RUN before any crawl.",
+        "profile_order": 5,
+        "mode": "tab",
+        "config_files": ["TorBot Docker/README.md", "TorBot Docker/compose.yaml"],
+        "status": {"kind": "exit-code"},
+        "health": {"image": "torbot-hardened"},
+        "pane": {"prefer": "window", "interactive": true},
+        "exit": {"64": "blocked argument (--disable-socks5, --update, --app, --allow-remote)"}
+      },
+      "interactive_equivalents": {"menu": "TorBot Docker/torbot-menu.ps1", "noninteractive": null}
+    }
+  ]
+}

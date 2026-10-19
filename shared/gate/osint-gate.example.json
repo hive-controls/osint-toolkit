@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "mode": "vpn",
+  "vpnNamePatterns": [
+    "WireGuard",
+    "Wintun",
+    "NordLynx",
+    "NordVPN",
+    "Mullvad",
+    "OpenVPN",
+    "TAP-Windows",
+    "Cisco AnyConnect",
+    "GlobalProtect",
+    "ProtonVPN",
+    "ExpressVPN",
+    "Surfshark",
+    "PIA",
+    "Private Internet Access"
+  ],
+  "proxyUrls": [],
+  "notes": "Copy to %LOCALAPPDATA%\\<MaigretLauncher|PhoneLookup|TorBotLauncher|ScannerLauncher>\\<maigret|phone|torbot|scanner>-gate.json to customize. mode is \"vpn\" (default) or \"routed-proxy\"; the two are exclusive. In vpn mode a VPN counts only when the adapter is Up AND the routing table sends public traffic through it; patterns are case-insensitive wildcard matches against '<adapter name> <adapter description>' and need at least 3 characters. routedProxy sample (set mode to \"routed-proxy\"; vpnNamePatterns is then not used): \"routedProxy\": { \"url\": \"http://203.0.113.10:3128\", \"verifyHost\": \"example.com\", \"allowPrivate\": false, \"tlsToProxy\": false, \"connectTimeoutSeconds\": 5 }. Only http proxies are supported (https only with tlsToProxy=true; SOCKS is rejected because squid cannot chain SOCKS parents); loopback, link-local, multicast, unspecified and this host's own addresses are always rejected, and private/CGNAT/ULA addresses need allowPrivate=true. Ambient HTTP(S)_PROXY variables are never read. proxyUrls is retired: keep it empty or remove it (a non-empty value is rejected as a config error). Tailscale is mesh networking, not a privacy VPN."
+}

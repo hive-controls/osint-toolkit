@@ -1,0 +1,56 @@
+{
+  "_comment": "Keys are name==version. Overrides win over package metadata. status 'pending' makes the generator fail. Each texts[] entry is verified by sha256 against shared/build/license-texts/.",
+  "overrides": {
+    "graphemeu==0.7.2": {
+      "spdx": "MIT",
+      "note": "Bundled LICENSE is the MIT text with four copyright lines; metadata only names the first line."
+    },
+    "igraph==1.0.0": {
+      "spdx": "GPL-2.0 (see bundled text)",
+      "note": "Bundled text is GNU GPL version 2; whether it is 'or later' is not stated in the wheel metadata (unverified)."
+    },
+    "python-dateutil==2.9.0.post0": {
+      "spdx": "Apache-2.0 OR BSD-3-Clause (dual license; see bundled text)",
+      "note": "Metadata says only 'Dual License'; classifiers list BSD and Apache."
+    },
+    "pyinstaller==6.22.3": {
+      "spdx": "GPL-2.0-or-later WITH Bootloader-exception",
+      "note": "Build-time only; removed from the TorBot runtime image."
+    },
+    "reportlab==4.5.1": {
+      "spdx": "BSD-3-Clause",
+      "note": "Bundled LICENSE is the three-clause BSD text."
+    },
+    "torbot==4.3.0": {
+      "spdx": "GPL-3.0 (see bundled LICENSE.md)",
+      "note": "TorBot is GPL-3.0 and runs only in its own container and compose project."
+    },
+    "xmind==1.2.0": {
+      "spdx": "MIT",
+      "note": "The wheel ships no license file; the upstream MIT text is reproduced below.",
+      "texts": [
+        {
+          "path": "xmind-1.2.0-LICENSE.txt",
+          "url": "https://raw.githubusercontent.com/zhuifengshen/xmind/master/LICENSE",
+          "sha256": "3989bef4c8dbd66c6c3d9c62b0a5c82be46b528dcbd29d8c98aff2830004c7c9"
+        }
+      ]
+    },
+    "yattag==1.16.1": {
+      "spdx": "LGPL-2.1-only",
+      "note": "Metadata only says 'LGPL'. Upstream's COPYING states 'GNU Lesser General Public License version 2.1'. Installed unmodified as a replaceable wheel.",
+      "texts": [
+        {
+          "path": "yattag-COPYING.txt",
+          "url": "https://raw.githubusercontent.com/leforestier/yattag/master/license/COPYING",
+          "sha256": "c3354e0ea8bbb88e8c8b9ea8ab7ab48bf4a7d0f8b2db76ee709aba2101c0f59c"
+        },
+        {
+          "path": "yattag-lgpl-2.1.txt",
+          "url": "https://raw.githubusercontent.com/leforestier/yattag/master/license/lgpl-2.1.txt",
+          "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+        }
+      ]
+    }
+  }
+}

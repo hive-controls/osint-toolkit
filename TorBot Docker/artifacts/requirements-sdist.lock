@@ -1,0 +1,7 @@
+# Packages with no usable py3 wheel on PyPI: built from the sha256-pinned SDIST by
+# shared/build/fetch_wheelhouse.py (see requirements-build.lock). The wheel's own hash is
+# pinned in ../requirements.lock. Hashes below are of the sdist.
+unipath==1.1 \
+    --hash=sha256:09839adcc72e8a24d4f76d63656f30b5a1f721fc40c9bcd79d8c67bdd8b47dae
+yattag==1.16.1 \
+    --hash=sha256:baa8f254e7ea5d3e0618281ad2ff5610e0e5360b3608e695c29bfb3b29d051f4

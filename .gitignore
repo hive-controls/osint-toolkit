@@ -1,0 +1,71 @@
+# Case data, saved reports and databases never belong in the repository.
+/OSINT/cases/*
+!/OSINT/cases/_template/
+/OSINT/cases/_template/*
+!/OSINT/cases/_template/case.md
+/OSINT/inbox*
+/OSINT/maigret*/
+/OSINT/maigret_saved_reports/
+/OSINT/torbot*/
+/OSINT/phone/
+/OSINT/scanner/
+/OSINT/.profiler*
+/OSINT/.profiler-locks/
+OSINT/**/*.sqlite*
+OSINT/**/*.db
+*.db
+
+# Local-only scrub terms
+/tests/.private-terms
+
+# Secrets and per-machine config (examples stay tracked)
+secrets.json
+providers.json
+*-gate.json
+!*.example.json
+runtime.json
+**/runtime.json
+.env
+.env.*
+*.pem
+*.key
+*.token
+
+# Wheelhouse and build artifacts
+**/artifacts/wheelhouse/
+**/artifacts/*.whl
+**/artifacts/*.zip
+**/artifacts/wheelhouse.manifest.txt
+
+# VM disks and images
+*.vhdx
+*.vhd
+*.qcow2
+*.iso
+*.img
+
+# Nested checkouts, environments and caches
+upstream-src/
+wheel-src/
+*.egg-info/
+.venv/
+venv/
+__pycache__/
+*.pyc
+node_modules/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+build/
+!/shared/build/
+dist/
+testResults.xml
+.idea/
+.vscode/
+*.swp
+
+# OS noise
+Thumbs.db
+.DS_Store

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>OSINT Profiler · Case desk</title>
+  <link rel="stylesheet" href="/app.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to case workspace</a>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Workspace navigation">
+      <a class="brand" href="/" aria-label="OSINT Profiler home"><span class="brand-mark" aria-hidden="true">OP</span><span>OSINT Profiler<small>Your local case desk</small></span></a>
+      <button id="home-button" class="nav-button" type="button">Cases & imports</button>
+      <div class="sidebar-label">CASE WORKSPACE</div>
+      <label for="case-picker" class="sr-only">Open a case</label>
+      <select id="case-picker"><option value="">Select a case…</option></select>
+      <nav id="case-nav" aria-label="Case sections"></nav>
+      <div class="sidebar-bottom"><span class="local-dot" aria-hidden="true"></span> Local storage · single operator<p>Terminal companion<br><code>osint-case</code></p><button id="help-button" class="text-button" type="button">Terminal & data guidance</button></div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar"><span id="breadcrumb">Workspace / Cases & imports</span><div class="actions"><button id="refresh-button" type="button">Refresh</button><button id="new-button" class="primary" type="button">+ New case</button></div></header>
+      <div id="notice" role="status" aria-live="polite" hidden></div>
+      <main id="main" tabindex="-1"><div class="empty">Opening your local workspace…</div></main>
+      <footer>Evidence stays on this machine. Scanner results and declared links retain their sources and review status.</footer>
+    </div>
+  </div>
+  <dialog id="dialog" aria-labelledby="dialog-title"><div class="dialog-top"><h2 id="dialog-title"></h2><button id="dialog-close" type="button" aria-label="Close dialog">Close</button></div><div id="dialog-body"></div></dialog>
+  <noscript>This local editor needs JavaScript. Case management is also available through the osint-case terminal command.</noscript>
+</body>
+</html>

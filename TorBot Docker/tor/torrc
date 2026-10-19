@@ -1,0 +1,16 @@
+## Hardened TorBot sidecar — SOCKS for compose peers only.
+## Do not publish 9050 to the host.
+## Process runs as debian-tor (uid 101). Data lives on tmpfs.
+
+DataDirectory /tmp/tor-data
+PidFile /tmp/tor.pid
+Log notice stdout
+
+SocksPort 0.0.0.0:9050 IsolateDestAddr IsolateDestPort
+
+# Loopback control for healthchecks (not published).
+ControlPort 127.0.0.1:9051
+CookieAuthentication 0
+
+AvoidDiskWrites 1
+SafeLogging 1

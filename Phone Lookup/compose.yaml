@@ -1,0 +1,90 @@
+name: phone-lookup-hardened
+
+services:
+  egress-proxy:
+    build:
+      context: .
+      dockerfile: Dockerfile.proxy
+    image: phone-lookup-egress-proxy:local
+    read_only: true
+    init: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    # Launcher sets OSINT_SQUID_CONF=squid-routed.conf and OSINT_SQUID_UPSTREAM in routed-proxy mode.
+    command: ["-f", "/etc/squid/${OSINT_SQUID_CONF:-squid.conf}"]
+    volumes:
+      - ${OSINT_SQUID_UPSTREAM:-./proxy/upstream.default.conf}:/etc/squid/upstream.d/upstream.conf:ro
+    pids_limit: 64
+    mem_limit: 256m
+    cpus: 0.50
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,mode=1777
+      - /run/squid:rw,noexec,nosuid,nodev,size=4m,mode=0700,uid=13,gid=13
+      - /var/log/squid:rw,noexec,nosuid,nodev,size=16m,mode=0700,uid=13,gid=13
+    healthcheck:
+      test: ["CMD-SHELL", "test -s /tmp/squid.pid && kill -0 $$(cat /tmp/squid.pid)"]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+      start_period: 2s
+    networks:
+      - phone-internal
+      - proxy-egress
+    restart: "no"
+
+  phone:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: phone-lookup-hardened:0.1.0
+    depends_on:
+      egress-proxy:
+        condition: service_healthy
+    read_only: true
+    init: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 64
+    mem_limit: 512m
+    cpus: 1.0
+    environment:
+      HTTP_PROXY: http://egress-proxy:3128
+      HTTPS_PROXY: http://egress-proxy:3128
+      ALL_PROXY: http://egress-proxy:3128
+      PHONE_LOOKUP_OUTPUT: /output
+      OSINT_SUBJECT_AUTH: ${OSINT_SUBJECT_AUTH:-}
+      NUMVERIFY_API_KEY: ${NUMVERIFY_API_KEY:-}
+      APILAYER_API_KEY: ${APILAYER_API_KEY:-}
+      DEHASHED_API_KEY: ${DEHASHED_API_KEY:-}
+      LEAKCHECK_APIKEY: ${LEAKCHECK_APIKEY:-}
+      LEAKRADAR_API_KEY: ${LEAKRADAR_API_KEY:-}
+      # Host-computed enabled providers ("name@terms-version,..."); empty = none enabled.
+      PHONE_LOOKUP_PROVIDERS: ${PHONE_LOOKUP_PROVIDERS:-}
+      PHONE_LOOKUP_REQUIRE_CASE: "1"
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
+    volumes:
+      - type: bind
+        # The runner/menu exports this variable (data-root lane); plain `docker compose` falls back to the legacy default below.
+        source: ${PHONE_LOOKUP_OUTPUT:-../OSINT/phone}
+        target: /output
+    networks:
+      - phone-internal
+    stdin_open: true
+    tty: true
+    restart: "no"
+
+networks:
+  phone-internal:
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.36.0.0/24
+  proxy-egress:
+    ipam:
+      config:
+        - subnet: 172.37.0.0/24

@@ -1,0 +1,11 @@
+*
+!Dockerfile
+!Dockerfile.proxy
+!requirements.lock
+!hardening/
+!hardening/**
+!proxy/
+!proxy/**
+!artifacts/
+!artifacts/wheelhouse/
+!artifacts/wheelhouse/**

@@ -1,0 +1,27 @@
+formic: 1
+name: torbot
+title: TorBot (hardened)
+description: Onion crawler over the Tor sidecar. Opens the guided menu, which runs the host VPN/proxy gate and asks for a typed RUN before any crawl.
+launch:
+  command: pwsh
+  args:
+    - "-NoLogo"
+    - "-NoProfile"
+    - "-ExecutionPolicy"
+    - "Bypass"
+    - "-File"
+    - "{repo}/TorBot Docker/torbot-menu.ps1"
+  cwd: "{repo}/TorBot Docker"
+config:
+  files:
+    - "TorBot Docker/README.md"
+    - "TorBot Docker/compose.yaml"
+status:
+  kind: exit-code
+health:
+  check: ["docker", "image", "inspect", "torbot-hardened:4.3.0"]
+pane:
+  prefer: window
+  interactive: true
+exit:
+  "64": blocked argument (--disable-socks5, --update, --app, --allow-remote)

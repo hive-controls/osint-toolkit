@@ -1,0 +1,3 @@
+LEAKCHECK (v2 query API)
+
+Sends the subject's phone number as digits only (no +) in the URL path to leakcheck.io with `type=phone`, authenticated with your API key in the `X-API-Key` header (providers/leakcheck.py:11-13). The vendor may log the query, and a phone number in a URL path is more likely to appear in intermediary logs. Whether your LeakCheck plan supports phone search is not established by this repository; the provider's documented behaviour for phone queries was not independently confirmed when this was written. Retention, logging and permitted-use terms: see vendor. You must hold your own LeakCheck account and accept the vendor's terms of service yourself; you must be authorized to query this subject and you remain responsible for each query you send.

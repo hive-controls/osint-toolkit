@@ -1,0 +1,21 @@
+{
+  "vpnNamePatterns": [
+    "WireGuard",
+    "Wintun",
+    "NordLynx",
+    "NordVPN",
+    "Mullvad",
+    "OpenVPN",
+    "TAP-Windows",
+    "Cisco AnyConnect",
+    "GlobalProtect",
+    "ProtonVPN",
+    "ExpressVPN",
+    "Surfshark",
+    "PIA",
+    "Private Internet Access"
+  ],
+  "proxyUrls": [],
+  "tcpTimeoutSeconds": 3,
+  "notes": "Copy to %LOCALAPPDATA%\\TorBotLauncher\\torbot-gate.json to customize. proxyUrls is retired — a non-empty proxyUrls is a configuration error (exit 78); routed-proxy mode will use a routedProxy block in a later release. Tailscale is mesh networking, not a privacy VPN."
+}

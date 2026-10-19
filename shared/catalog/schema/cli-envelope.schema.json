@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "osint-case --json envelope",
+  "description": "Exactly one of these objects is printed on stdout by every subcommand under --json. ok=true implies error=null; ok=false carries error and, for runs that produced partial results, data. legacy_error is the deprecated pre-envelope error object and is removed after one release.",
+  "type": "object",
+  "required": ["ok", "data", "error"],
+  "properties": {
+    "ok": {"type": "boolean"},
+    "data": {},
+    "error": {
+      "type": ["object", "null"],
+      "required": ["code", "message", "next"],
+      "properties": {
+        "code": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+        "message": {"type": "string"},
+        "next": {"type": "string"},
+        "details": {"type": "object"}
+      },
+      "additionalProperties": false
+    },
+    "legacy_error": {"type": "object", "required": ["error"], "properties": {"error": {"type": "string"}}}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "chain.schema.json",
+  "title": "OSINT declarative chain spec",
+  "description": "Step ids must be unique and references may only point to earlier steps; those two rules are enforced by plan_chain, not by this schema.",
+  "type": "object",
+  "required": ["version", "id", "case_id", "steps"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {"const": 1},
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{0,62}$"},
+    "case_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{0,62}$"},
+    "steps": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/step"}}
+  },
+  "$defs": {
+    "step": {
+      "type": "object",
+      "required": ["id", "tool", "inputs"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{0,62}$"},
+        "tool": {"type": "string", "minLength": 1},
+        "inputs": {"type": "object", "additionalProperties": {"type": "string", "minLength": 1}},
+        "options": {"type": "object"},
+        "derived_ok": {"type": "boolean"},
+        "on_error": {"enum": ["stop", "continue"]}
+      }
+    }
+  }
+}

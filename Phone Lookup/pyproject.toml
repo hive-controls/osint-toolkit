@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "phone-lookup"
+version = "0.1.0"
+license = "Apache-2.0"
+description = "Phone numbering-plan parse plus optional Numverify and breach lookups."
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.27",
+    "phonenumbers>=8.13",
+]
+
+[project.scripts]
+phone-lookup = "phone_lookup.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

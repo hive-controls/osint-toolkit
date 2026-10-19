@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "osint-casework"
+dynamic = ["version"]
+description = "Local, evidence-backed OSINT case workbench: stdlib-only CLI and library API."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+osint-case = "osint_profiler.cli:console_main"
+
+[tool.setuptools.dynamic]
+version = {attr = "osint_profiler.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["osint_profiler*"]
+
+[tool.setuptools.package-data]
+osint_profiler = ["static/*", "ACKNOWLEDGEMENT.txt"]

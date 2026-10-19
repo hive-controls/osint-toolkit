@@ -1,0 +1,3 @@
+LEAKRADAR (advanced search API)
+
+Sends the subject's phone number, both E.164 and digits-only forms, as `username` values in a POST body to api.leakradar.io, authenticated with your API key as a Bearer token (providers/leakradar.py:9,15-16). LeakRadar has no native phone index; the number is searched as a username. The vendor may log the query. Retention, logging and permitted-use terms: see vendor. You must hold your own LeakRadar account and accept the vendor's terms of service yourself; you must be authorized to query this subject and you remain responsible for each query you send.

@@ -1,0 +1,33 @@
+formic: 1
+name: osint-case
+title: OSINT Profiler
+description: Guided local case management, evidence, imports and scans with an optional browser editor.
+launch:
+  command: pwsh
+  args:
+    - "-NoLogo"
+    - "-NoProfile"
+    - "-ExecutionPolicy"
+    - "Bypass"
+    - "-File"
+    - "{repo}/OSINT Profiler/osint-case.ps1"
+  cwd: "{repo}/OSINT Profiler"
+config:
+  files:
+    - "OSINT Profiler/README.md"
+status:
+  kind: ndjson
+  events: [started, progress, ok, failed, needs-human]
+health:
+  check: ["pwsh", "-NoProfile", "-File", "OSINT Profiler/osint-case.ps1", "doctor", "--offline"]
+pane:
+  prefer: window
+  interactive: true
+exit:
+  "0": session or operation completed
+  "1": operation failed
+  "2": invalid arguments or missing required input
+  "75": network gate refused the run
+  "77": subject authorization required
+  "78": network gate configuration error
+  "130": one-shot operation interrupted

@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install pytest
+        run: python -m pip install pytest
+      - name: Root tests
+        run: python -m pytest -q tests
+      - name: OSINT Profiler tests
+        working-directory: OSINT Profiler
+        run: python -m pytest -q tests
+      - name: Phone Lookup tests
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install -e "Phone Lookup"
+          .venv/bin/python -m unittest discover -s "Phone Lookup/tests"
+      - name: Compile check
+        run: python -m compileall -q "OSINT Profiler/osint_profiler" "Phone Lookup/src"
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: python -m pip install pytest
+      - name: Root tests
+        run: python -m pytest -q tests
+      - name: OSINT Profiler tests
+        working-directory: OSINT Profiler
+        run: python -m pytest -q tests
+      - name: Phone Lookup tests
+        run: |
+          python -m venv .venv
+          .venv\Scripts\pip install -e "Phone Lookup"
+          .venv\Scripts\python -m unittest discover -s "Phone Lookup/tests"
+      - name: Compile check
+        run: python -m compileall -q "OSINT Profiler/osint_profiler" "Phone Lookup/src"
+      - name: Pester tests
+        shell: pwsh
+        run: |
+          Install-Module Pester -RequiredVersion 5.7.1 -Scope CurrentUser -Force -SkipPublisherCheck
+          Import-Module Pester -RequiredVersion 5.7.1
+          Invoke-Pester -Path tests/powershell -CI

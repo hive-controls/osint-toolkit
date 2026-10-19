@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "result.schema.json",
+  "title": "OSINT run result envelope",
+  "type": "object",
+  "required": ["schema_version", "tool_id", "tool_version", "catalog_version", "case_id", "job_id", "chain",
+               "started", "finished", "exit_code", "gate", "inputs", "artifacts", "entities", "errors"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": 1},
+    "tool_id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+    "tool_version": {"type": "string", "minLength": 1},
+    "catalog_version": {"type": "string", "minLength": 1},
+    "case_id": {"type": "string", "minLength": 1},
+    "job_id": {"type": "string", "minLength": 1},
+    "chain": {"type": "null"},
+    "started": {"type": "string", "minLength": 1},
+    "finished": {"type": "string", "minLength": 1},
+    "exit_code": {"type": "integer"},
+    "gate": {"$ref": "#/$defs/gate"},
+    "inputs": {"type": "array", "items": {"$ref": "#/$defs/input"}},
+    "artifacts": {"type": "array", "items": {"$ref": "#/$defs/artifact"}},
+    "entities": {"type": "array", "items": {"$ref": "#/$defs/entity"}},
+    "errors": {"type": "array", "items": {"$ref": "#/$defs/error"}}
+  },
+  "$defs": {
+    "gate": {
+      "type": "object",
+      "required": ["network", "authorization"],
+      "additionalProperties": false,
+      "properties": {
+        "network": {
+          "type": "object",
+          "required": ["code", "mode"],
+          "additionalProperties": false,
+          "properties": {
+            "code": {"enum": ["PASS", 75, 78, null]},
+            "mode": {"type": "null"}
+          }
+        },
+        "authorization": {
+          "type": "object",
+          "required": ["status", "attestation_id"],
+          "additionalProperties": false,
+          "properties": {
+            "status": {"type": "string", "minLength": 1},
+            "attestation_id": {"type": ["string", "null"]}
+          }
+        }
+      }
+    },
+    "input": {
+      "type": "object",
+      "required": ["name", "kind", "value", "provenance", "from"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "kind": {"type": "string", "minLength": 1},
+        "value": {"type": "string"},
+        "provenance": {"type": "string", "enum": ["user", "derived"]},
+        "from": {"type": ["string", "null"]}
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "required": ["kind", "path", "sha256", "adapter", "bytes"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"type": "string", "minLength": 1},
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "adapter": {"type": ["string", "null"]},
+        "bytes": {"type": "integer", "minimum": 0}
+      }
+    },
+    "entity": {
+      "type": "object",
+      "required": ["id", "kind", "value", "attrs", "provenance", "source_artifact_sha256", "selector", "reported_status", "identity_assertion"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "kind": {"type": "string", "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)?$"},
+        "value": {"type": "string"},
+        "attrs": {"type": "object"},
+        "provenance": {"type": "string", "enum": ["user", "derived", "reported"]},
+        "source_artifact_sha256": {"type": ["string", "null"]},
+        "selector": {"type": ["string", "null"]},
+        "reported_status": {"type": ["string", "null"]},
+        "identity_assertion": {"const": false}
+      }
+    },
+    "error": {
+      "type": "object",
+      "required": ["code", "message"],
+      "additionalProperties": false,
+      "properties": {
+        "code": {"type": "string", "minLength": 1},
+        "message": {"type": "string"}
+      }
+    }
+  }
+}

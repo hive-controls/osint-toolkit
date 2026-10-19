@@ -1,0 +1,1344 @@
+[
+ {
+  "expected": {
+   "arguments": [
+    "alice",
+    "--top-sites",
+    "500",
+    "--no-recursion",
+    "-J",
+    "simple",
+    "--csv",
+    "-M"
+   ],
+   "kind": "username",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "alice",
+   "tool": "maigret",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "alice",
+   "tool": "maigret",
+   "top": 500
+  },
+  "name": "maigret-basic"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "alice",
+    "--top-sites",
+    "1",
+    "--no-recursion",
+    "-J",
+    "simple",
+    "--csv",
+    "-M"
+   ],
+   "kind": "username",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "alice",
+   "tool": "maigret",
+   "top": 1
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "alice",
+   "tool": "maigret",
+   "top": 1
+  },
+  "name": "maigret-top-min"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "alice",
+    "--top-sites",
+    "10000",
+    "--no-recursion",
+    "-J",
+    "simple",
+    "--csv",
+    "-M"
+   ],
+   "kind": "username",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "alice",
+   "tool": "maigret",
+   "top": 10000
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "alice",
+   "tool": "maigret",
+   "top": 10000
+  },
+  "name": "maigret-top-max"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Maigret requires a username and top-sites from 1 to 10000.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "alice",
+   "tool": "maigret",
+   "top": 0
+  },
+  "name": "maigret-top-zero"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Maigret requires a username and top-sites from 1 to 10000.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "alice",
+   "tool": "maigret",
+   "top": 10001
+  },
+  "name": "maigret-top-over"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Maigret requires a username and top-sites from 1 to 10000.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "alice",
+   "tool": "maigret",
+   "top": -5
+  },
+  "name": "maigret-top-negative"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "alice",
+    "--top-sites",
+    "250",
+    "--no-recursion",
+    "-J",
+    "simple",
+    "--csv",
+    "-M"
+   ],
+   "kind": "username",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "alice",
+   "tool": "maigret",
+   "top": 250
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "alice",
+   "tool": "maigret",
+   "top": "250"
+  },
+  "name": "maigret-top-string-number"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "invalid literal for int() with base 10: 'abc'",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "alice",
+   "tool": "maigret",
+   "top": "abc"
+  },
+  "name": "maigret-top-string-garbage"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Maigret requires a username and top-sites from 1 to 10000.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "email",
+   "modules": "",
+   "region": "",
+   "target": "a@b.test",
+   "tool": "maigret",
+   "top": 500
+  },
+  "name": "maigret-kind-email"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Maigret requires a username and top-sites from 1 to 10000.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "phone",
+   "modules": "",
+   "region": "",
+   "target": "+15551234567",
+   "tool": "maigret",
+   "top": 500
+  },
+  "name": "maigret-kind-phone"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Unknown identifier kind.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "domain",
+   "modules": "",
+   "region": "",
+   "target": "alice",
+   "tool": "maigret",
+   "top": 500
+  },
+  "name": "maigret-kind-unknown"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "alice",
+    "--top-sites",
+    "500",
+    "--no-recursion",
+    "-J",
+    "simple",
+    "--csv",
+    "-M"
+   ],
+   "kind": "username",
+   "modules": "x",
+   "ok": true,
+   "region": "US",
+   "target": "alice",
+   "tool": "maigret",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "x",
+   "region": "US",
+   "target": "alice",
+   "tool": "maigret",
+   "top": 500
+  },
+  "name": "maigret-ignores-region-modules"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "-u",
+    "alice",
+    "--no-nsfw",
+    "-f",
+    "json",
+    "-o",
+    "/output/results.json"
+   ],
+   "kind": "username",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "alice",
+   "tool": "scanner",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "alice",
+   "tool": "scanner",
+   "top": 500
+  },
+  "name": "scanner-username"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "-e",
+    "a@b.test",
+    "--no-nsfw",
+    "-f",
+    "json",
+    "-o",
+    "/output/results.json"
+   ],
+   "kind": "email",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "a@b.test",
+   "tool": "scanner",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "email",
+   "modules": "",
+   "region": "",
+   "target": "a@b.test",
+   "tool": "scanner",
+   "top": 500
+  },
+  "name": "scanner-email"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Scanner requires a username or email.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "phone",
+   "modules": "",
+   "region": "",
+   "target": "+15551234567",
+   "tool": "scanner",
+   "top": 500
+  },
+  "name": "scanner-kind-phone"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Unknown identifier kind.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "nope",
+   "modules": "",
+   "region": "",
+   "target": "alice",
+   "tool": "scanner",
+   "top": 500
+  },
+  "name": "scanner-kind-unknown"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "-u",
+    "alice",
+    "--no-nsfw",
+    "-f",
+    "json",
+    "-o",
+    "/output/results.json",
+    "-m",
+    "github,reddit_x.y-z"
+   ],
+   "kind": "username",
+   "modules": "github,reddit_x.y-z",
+   "ok": true,
+   "region": "",
+   "target": "alice",
+   "tool": "scanner",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "github,reddit_x.y-z",
+   "region": "",
+   "target": "alice",
+   "tool": "scanner",
+   "top": 500
+  },
+  "name": "scanner-modules-ok"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Modules must be comma-separated module names.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "github, reddit",
+   "region": "",
+   "target": "alice",
+   "tool": "scanner",
+   "top": 500
+  },
+  "name": "scanner-modules-space"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Modules must be comma-separated module names.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "a;b",
+   "region": "",
+   "target": "alice",
+   "tool": "scanner",
+   "top": 500
+  },
+  "name": "scanner-modules-semicolon"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "-u",
+    "alice",
+    "--no-nsfw",
+    "-f",
+    "json",
+    "-o",
+    "/output/results.json",
+    "-m",
+    "--x"
+   ],
+   "kind": "username",
+   "modules": "--x",
+   "ok": true,
+   "region": "",
+   "target": "alice",
+   "tool": "scanner",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "--x",
+   "region": "",
+   "target": "alice",
+   "tool": "scanner",
+   "top": 500
+  },
+  "name": "scanner-modules-flag-like"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "-u",
+    "alice",
+    "--no-nsfw",
+    "-f",
+    "json",
+    "-o",
+    "/output/results.json",
+    "-m",
+    "a"
+   ],
+   "kind": "username",
+   "modules": "a",
+   "ok": true,
+   "region": "",
+   "target": "alice",
+   "tool": "scanner",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "a",
+   "region": "",
+   "target": "alice",
+   "tool": "scanner",
+   "top": 500
+  },
+  "name": "scanner-modules-single-char"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "invalid literal for int() with base 10: 'x'",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "alice",
+   "tool": "scanner",
+   "top": "x"
+  },
+  "name": "scanner-top-garbage"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "-u",
+    "alice",
+    "--no-nsfw",
+    "-f",
+    "json",
+    "-o",
+    "/output/results.json"
+   ],
+   "kind": "username",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "alice",
+   "tool": "scanner",
+   "top": 99999
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "alice",
+   "tool": "scanner",
+   "top": 99999
+  },
+  "name": "scanner-top-out-of-range-ignored"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "-u",
+    "alice",
+    "--no-nsfw",
+    "-f",
+    "json",
+    "-o",
+    "/output/results.json"
+   ],
+   "kind": "username",
+   "modules": "",
+   "ok": true,
+   "region": "zzzz",
+   "target": "alice",
+   "tool": "scanner",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "zzzz",
+   "target": "alice",
+   "tool": "scanner",
+   "top": 500
+  },
+  "name": "scanner-region-ignored"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "+15551234567"
+   ],
+   "kind": "phone",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "+15551234567",
+   "tool": "phone",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "phone",
+   "modules": "",
+   "region": "",
+   "target": "+15551234567",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-basic"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "+15551234567"
+   ],
+   "kind": "phone",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "+15551234567",
+   "tool": "phone",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "+15551234567",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-forces-kind-from-username"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "+15551234567"
+   ],
+   "kind": "phone",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "+15551234567",
+   "tool": "phone",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "email",
+   "modules": "",
+   "region": "",
+   "target": "+15551234567",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-forces-kind-from-email"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Unknown identifier kind.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "bogus",
+   "modules": "",
+   "region": "",
+   "target": "+15551234567",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-unknown-kind-rejected-first"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "5551234567"
+   ],
+   "kind": "phone",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "5551234567",
+   "tool": "phone",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "5551234567",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-no-plus"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Enter one identifier, without whitespace or command flags.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "(555) 123-4567",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-punctuated"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "(555)123-4567"
+   ],
+   "kind": "phone",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "(555)123-4567",
+   "tool": "phone",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "(555)123-4567",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-punctuated-nospace"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "555.123.4567"
+   ],
+   "kind": "phone",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "555.123.4567",
+   "tool": "phone",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "555.123.4567",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-dots-dashes"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "1234"
+   ],
+   "kind": "phone",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "1234",
+   "tool": "phone",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "1234",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-min-length"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Enter a phone number, preferably +countrycode and digits.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "123",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-too-short"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "+111111111111111111111111111111"
+   ],
+   "kind": "phone",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "+111111111111111111111111111111",
+   "tool": "phone",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "+111111111111111111111111111111",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-max-length"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Enter a phone number, preferably +countrycode and digits.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "+1111111111111111111111111111111",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-too-long"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "111111111111111111111111111111"
+   ],
+   "kind": "phone",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "111111111111111111111111111111",
+   "tool": "phone",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "111111111111111111111111111111",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-max-length-no-plus"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Enter a phone number, preferably +countrycode and digits.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "1111111111111111111111111111111",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-too-long-no-plus"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Enter a phone number, preferably +countrycode and digits.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "+1555CALLME",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-letters"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "+15551234567",
+    "--region",
+    "US"
+   ],
+   "kind": "phone",
+   "modules": "",
+   "ok": true,
+   "region": "US",
+   "target": "+15551234567",
+   "tool": "phone",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "US",
+   "target": "+15551234567",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-region-upper"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "5551234567",
+    "--region",
+    "GB"
+   ],
+   "kind": "phone",
+   "modules": "",
+   "ok": true,
+   "region": "gb",
+   "target": "5551234567",
+   "tool": "phone",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "gb",
+   "target": "5551234567",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-region-lower"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Region must be a two-letter country code.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "USA",
+   "target": "+15551234567",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-region-three"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Region must be a two-letter country code.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "U1",
+   "target": "+15551234567",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-region-digit"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "+15551234567"
+   ],
+   "kind": "phone",
+   "modules": "anything at all",
+   "ok": true,
+   "region": "",
+   "target": "+15551234567",
+   "tool": "phone",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "anything at all",
+   "region": "",
+   "target": "+15551234567",
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "phone-modules-passthrough"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Enter one identifier, without whitespace or command flags.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "-alice",
+   "tool": "maigret",
+   "top": 500
+  },
+  "name": "target-leading-dash"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Enter one identifier, without whitespace or command flags.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "--help",
+   "tool": "scanner",
+   "top": 500
+  },
+  "name": "target-leading-dash-scanner"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Enter one identifier, without whitespace or command flags.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "ali ce",
+   "tool": "maigret",
+   "top": 500
+  },
+  "name": "target-whitespace-inside"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Enter one identifier, without whitespace or command flags.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "ali\tce",
+   "tool": "scanner",
+   "top": 500
+  },
+  "name": "target-tab-inside"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Enter one identifier, without whitespace or command flags.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "ali\nce",
+   "tool": "maigret",
+   "top": 500
+  },
+  "name": "target-newline-inside"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Enter one identifier, without whitespace or command flags.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "ali\u0001ce",
+   "tool": "maigret",
+   "top": 500
+  },
+  "name": "target-control-char"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Enter one identifier, without whitespace or command flags.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "ali\u0000ce",
+   "tool": "scanner",
+   "top": 500
+  },
+  "name": "target-nul"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Enter one identifier, without whitespace or command flags.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "",
+   "tool": "maigret",
+   "top": 500
+  },
+  "name": "target-empty"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Enter one identifier, without whitespace or command flags.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "   ",
+   "tool": "maigret",
+   "top": 500
+  },
+  "name": "target-only-space"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "alice",
+    "--top-sites",
+    "500",
+    "--no-recursion",
+    "-J",
+    "simple",
+    "--csv",
+    "-M"
+   ],
+   "kind": "username",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "alice",
+   "tool": "maigret",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "  alice  ",
+   "tool": "maigret",
+   "top": 500
+  },
+  "name": "target-trimmed"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "--top-sites",
+    "500",
+    "--no-recursion",
+    "-J",
+    "simple",
+    "--csv",
+    "-M"
+   ],
+   "kind": "username",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "tool": "maigret",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "tool": "maigret",
+   "top": 500
+  },
+  "name": "target-max-254"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Enter one identifier, without whitespace or command flags.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "tool": "maigret",
+   "top": 500
+  },
+  "name": "target-over-255"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "5551234567"
+   ],
+   "kind": "phone",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "5551234567",
+   "tool": "phone",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": 5551234567,
+   "tool": "phone",
+   "top": 500
+  },
+  "name": "target-numeric-type"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "a;b&c|d$e",
+    "--top-sites",
+    "500",
+    "--no-recursion",
+    "-J",
+    "simple",
+    "--csv",
+    "-M"
+   ],
+   "kind": "username",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "a;b&c|d$e",
+   "tool": "maigret",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "a;b&c|d$e",
+   "tool": "maigret",
+   "top": 500
+  },
+  "name": "target-shell-metachar-allowed"
+ },
+ {
+  "expected": {
+   "arguments": [
+    "\u00e9lise",
+    "--top-sites",
+    "500",
+    "--no-recursion",
+    "-J",
+    "simple",
+    "--csv",
+    "-M"
+   ],
+   "kind": "username",
+   "modules": "",
+   "ok": true,
+   "region": "",
+   "target": "\u00e9lise",
+   "tool": "maigret",
+   "top": 500
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "\u00e9lise",
+   "tool": "maigret",
+   "top": 500
+  },
+  "name": "target-unicode"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Choose maigret, scanner, or phone.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "alice",
+   "tool": "torbot",
+   "top": 500
+  },
+  "name": "tool-unknown"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Choose maigret, scanner, or phone.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "alice",
+   "tool": "",
+   "top": 500
+  },
+  "name": "tool-empty"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Choose maigret, scanner, or phone.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "alice",
+   "tool": "Maigret",
+   "top": 500
+  },
+  "name": "tool-wrong-case"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Choose maigret, scanner, or phone.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "username",
+   "modules": "",
+   "region": "",
+   "target": "-bad target",
+   "tool": "nope",
+   "top": 500
+  },
+  "name": "unknown-tool-checked-before-target"
+ },
+ {
+  "expected": {
+   "error_type": "ValueError",
+   "message": "Enter one identifier, without whitespace or command flags.",
+   "ok": false
+  },
+  "inputs": {
+   "kind": "zzz",
+   "modules": "",
+   "region": "",
+   "target": "-bad",
+   "tool": "maigret",
+   "top": 500
+  },
+  "name": "target-checked-before-kind"
+ }
+]

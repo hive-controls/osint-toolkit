@@ -1,0 +1,11 @@
+tools:
+  osint-case:
+    mode: tab
+  phone-lookup:
+    mode: tab
+  user-scanner:
+    mode: tab
+  maigret:
+    mode: tab
+  torbot:
+    mode: tab

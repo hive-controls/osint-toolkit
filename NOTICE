@@ -1,0 +1,74 @@
+OSINT toolkit
+Copyright (c) 2026 Hive Controls
+
+This product is licensed under the Apache License, Version 2.0. See the
+LICENSE file in the repository root for the full text.
+
+Third-party software that this toolkit installs at image-build time is not
+distributed in this repository. Per-tool inventories of every pinned
+dependency, with licenses, are in:
+
+  Maigret Docker/THIRD-PARTY-NOTICES.md
+  Phone Lookup/THIRD-PARTY-NOTICES.md
+  TorBot Docker/THIRD-PARTY-NOTICES.md
+  User-Scanner Docker/THIRD-PARTY-NOTICES.md
+
+TorBot is licensed GPL-3.0 and runs in its own container and compose project;
+see "Licensing and the GPL boundary" in README.md.
+
+
+Modified upstream components
+============================
+
+User-Scanner (https://github.com/kaifcodec/user-scanner), version 1.5.1.3,
+is installed from its published wheel and carries its own MIT license, which
+is reproduced below. The User-Scanner Docker image modifies the installed
+package at build time (see "User-Scanner Docker/Dockerfile"):
+
+  1. user_scanner/core/loud_prompt.py is overwritten with
+     "User-Scanner Docker/hardening/loud_prompt.py". The replacement keeps the
+     upstream function names and signatures (update_loud_module_preference,
+     check_loud_module_permission) and part of the upstream skip message, so it
+     is a MODIFIED version of the upstream file, not an independent work. It
+     removes the interactive prompt and the saved-preference path; a loud
+     module runs only when --allow-loud is passed.
+
+  2. user_scanner/utils/update.py is overwritten with
+     "User-Scanner Docker/hardening/update.py". The replacement keeps the
+     upstream get_version helper shape and the update_self entry point, so it
+     is a MODIFIED version of the upstream file, not an independent work.
+     update_self now refuses to run (self-update is disabled in the image).
+
+  3. user_scanner/user_scan/music/myspace.py is patched with sed to remove the
+     ", verify=False" argument so TLS certificate verification stays on.
+
+  4. The user-scanner-mcp console script is deleted from the image.
+
+All other User-Scanner files are installed unmodified. The modified files in
+this repository are distributed under the upstream MIT license for the
+upstream-derived portions and under the Apache License 2.0 for the Hive
+Controls additions.
+
+----- User-Scanner upstream license (MIT), verbatim -----
+
+MIT License
+
+Copyright (c) 2025 Kaif
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

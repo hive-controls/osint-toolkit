@@ -1,0 +1,25 @@
+formic: 1
+name: phone-lookup
+title: Phone lookup (hardened)
+description: Numbering-plan metadata plus optional breach and infostealer queries. Opens the guided menu, which asks for the number and a typed RUN. API keys stay in the tool's own secrets file.
+launch:
+  command: pwsh
+  args:
+    - "-NoLogo"
+    - "-NoProfile"
+    - "-ExecutionPolicy"
+    - "Bypass"
+    - "-File"
+    - "{repo}/Phone Lookup/phone-menu.ps1"
+  cwd: "{repo}/Phone Lookup"
+config:
+  files:
+    - "Phone Lookup/README.md"
+    - "Phone Lookup/compose.yaml"
+status:
+  kind: exit-code
+health:
+  check: ["docker", "image", "inspect", "phone-lookup-hardened:0.1.0"]
+pane:
+  prefer: window
+  interactive: true
