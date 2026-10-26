@@ -1,0 +1,37 @@
+name: DCO
+
+# Every commit in a pull request certifies the Developer Certificate of Origin
+# (https://developercertificate.org/) with a sign-off from its author: `git commit -s`.
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  dco:
+    name: sign-off
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Every commit carries its author's Signed-off-by
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          missing=0
+          for commit in $(git rev-list --no-merges "$BASE_SHA..$HEAD_SHA"); do
+            author_email="$(git log -1 --format=%ae "$commit")"
+            signoffs="$(git log -1 --format=%B "$commit" | grep -i '^Signed-off-by: ' || true)"
+            if ! grep -qiF "<$author_email>" <<<"$signoffs"; then
+              echo "::error::$(git log -1 --format='%h %s' "$commit") has no 'Signed-off-by:' from its author <$author_email>"
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            echo "Sign off each commit with 'git commit -s' (see CONTRIBUTING.md)."
+            exit 1
+          fi
