@@ -1,0 +1,18 @@
+# Per-file exceptions for the public scrub. Only the `email` and `private-ipv4` checks can be
+# excepted, one exact file per line. Every other check still applies to these files.
+
+# Upstream authors' copyright lines inside verbatim license texts; the text must not be altered.
+email Maigret Docker/THIRD-PARTY-NOTICES.md
+email TorBot Docker/THIRD-PARTY-NOTICES.md
+email User-Scanner Docker/THIRD-PARTY-NOTICES.md
+email Phone Lookup/THIRD-PARTY-NOTICES.md
+
+# Egress block-lists: the private ranges are denied on purpose (squid ACLs, compose network
+# ranges) and exercised by the network-gate tests.
+private-ipv4 Maigret Docker/proxy/squid.conf
+private-ipv4 Phone Lookup/proxy/squid.conf
+private-ipv4 User-Scanner Docker/proxy/squid.conf
+private-ipv4 User-Scanner Docker/proxy/squid-routed.conf
+private-ipv4 User-Scanner Docker/compose.yaml
+private-ipv4 tests/powershell/OsintNetworkGate.RoutedProxy.Tests.ps1
+private-ipv4 tests/test_squid_variants.py

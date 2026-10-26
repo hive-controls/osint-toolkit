@@ -4,6 +4,9 @@ Fork the repository, create a branch, and open a pull request against `main`. Ke
 request focused. By participating you agree to the [Code of Conduct](CODE_OF_CONDUCT.md).
 Report vulnerabilities privately per [SECURITY.md](SECURITY.md), not in issues.
 
+Every pull request runs the test suite, the public scrub (credentials, private IP ranges, user
+home paths, email addresses, AI attribution) and the sign-off check; all must pass.
+
 ## Running the checks
 
 ```
@@ -42,5 +45,8 @@ There is no linter in v1; `compileall` is the syntax gate.
 
 ## License
 
-Contributions are licensed under Apache-2.0, the same as the project (inbound = outbound). There
-is no CLA and no sign-off requirement.
+Contributions are licensed under Apache-2.0, the same as the project (inbound = outbound).
+
+Sign off each commit (`git commit -s`) to certify the
+[Developer Certificate of Origin](https://developercertificate.org/). The sign-off check fails a
+pull request with any commit that lacks its author's `Signed-off-by:` line. There is no CLA.
